@@ -8,55 +8,229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stop Top - PI</title>
+  <title>Stop Top - Sistema de Estacionamento</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 2.5rem auto; padding: 0 1.25rem 5rem; color: #333; line-height: 1.6; }
-    h1 { color: #6db33f; border-bottom: 2px solid #6db33f; padding-bottom: 0.4rem; margin-bottom: 0.25rem; }
-    h2 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-top: 2rem; margin-bottom: 0.5rem; }
-    a { color: #6db33f; }
-    ul { padding-left: 1.5rem; margin: 0; }
-    li { margin: 0.35rem 0; }
-    .meta { background: #f6f8f6; border: 1px solid #d4e8c4; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.875rem; }
-    .hash { font-family: monospace; font-size: 0.78rem; word-break: break-all; color: #666; margin: 0.25rem 0 0; }
-    .generated { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
-    .curiosity { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; border-radius: 4px; padding: 0.75rem 1rem; margin-top: 2rem; font-size: 0.875rem; color: #78450e; }
-    .curiosity strong { display: block; margin-bottom: 0.25rem; }
-    .site-footer { position: fixed; bottom: 0; left: 0; right: 0; background: #1e2d1e; color: #7a9a7a; font-size: 0.75rem; text-align: center; padding: 0.6rem 1rem; border-top: 1px solid #2e4a2e; }
-    .site-footer a { color: #6db33f; text-decoration: none; }
-    .site-footer a:hover { text-decoration: underline; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    /* NAVBAR */
+    nav {
+      background: #707070;
+      padding: 0.75rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    nav .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    nav .logo {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.2rem;
+      align-items: center;
+      flex: 1;
+      justify-content: flex-start;
+      margin: 0;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.3s;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    
+    nav a:hover {
+      opacity: 0.8;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+    
+    .search-box {
+      background: white;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    
+    .search-box input {
+      border: none;
+      outline: none;
+      padding: 0.2rem 0.4rem;
+      width: 120px;
+      font-size: 0.85rem;
+    }
+    
+    .search-box button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+      font-size: 0.9rem;
+      padding: 0;
+    }
+    
+    .nav-icons {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+    
+    .nav-icons a {
+      font-size: 1.1rem;
+      padding: 0.2rem 0.4rem;
+    }
+    
+    /* MAIN CONTENT */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .hero {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .hero h1 {
+      color: #c0392b;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .hero p {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    
+    /* CARDS E COMPONENTES */
+    .info-card {
+      background: #ffb3ba;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    
+    .btn-action {
+      background: #c0392b;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    
+    .btn-action:hover {
+      background: #a93226;
+    }
+    
+    /* FOOTER */
+    footer {
+      background: #707070;
+      color: #f0f0f0;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+      border-top: 1px solid #606060;
+    }
+    
+    footer a {
+      color: #c0392b;
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>Stop Top - PI</h1>
-  <p>Projeto focado em monitoramento de vagas de estacionamento</p>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        🅿️ Stop Top
+      </div>
+      <ul>
+        <li><a href="#cadastro">Cadastrar Cliente</a></li>
+        <li><a href="#pagamento">Pagamento</a></li>
+        <li><a href="#vagas">Vagas</a></li>
+        <li><a href="#gestao">Gestão</a></li>
+        <li><a href="#relatorio">Relatório</a></li>
+        <li><a href="#regras">Regras</a></li>
+      </ul>
+      <div class="navbar-right">
+        <div class="search-box">
+          <input type="text" placeholder="Bus">
+          <button>🔍</button>
+        </div>
+        <div class="nav-icons">
+          <a href="#notificacoes" title="Notificações">🔔</a>
+          <a href="#home" title="Home">🏠</a>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-  <h2>Links de apoio do projeto</h2>
-  <ul>
-    <li><a href="/swagger-ui.html">Swagger UI — documentação da API REST</a></li>
-    <li><a href="https://github.com/ftsuda-senac/dicas-desenvolvimento/blob/main/Dicas-e-Tutoriais-Spring.md" target="_blank" rel="noopener noreferrer">Dicas e Tutoriais Spring</a></li>
-  </ul>
-
-  <div class="curiosity">
-    <strong>🔍 Para pesquisar:</strong>
-    Por que esta página se chama <code>index.html</code>?
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="container">
+    <div class="hero">
+      <h1>Stop Top</h1>
+      <p>Sistema de Gerenciamento de Estacionamento</p>
+      <p style="color: #999; font-size: 1rem;">Projeto acadêmico desenvolvido em Java Spring</p>
+    </div>
   </div>
 
-  <h2>Identificação do projeto</h2>
-  <div class="meta">
-    <strong>Desenvolvedores:</strong>
-    <ul>
-      <li>Rafael Adelungue</li>
-      <li>Gustavo Gonçalves</li>
-      <li>João Vitor Reis</li>
-      <li>Nathan Liberatti</li>
-      <li>Erick Yuji</li>
-    </ul>
-    <p class="hash"><strong>hash-identificacao:</strong> 9b61a2f68d0e8e7d820f5023a4c51a6a7cdf75fbde85272b54fe90f2950bb20b</p>
-    <p class="generated">Gerado em: 15/04/2026, 20:49:46</p>
-  </div>
-
-  <footer class="site-footer">
-    Gerado pelo <a href="https://ftsuda-senac.github.io/tads-spring-initializr/" target="_blank" rel="noopener noreferrer">TADS Spring Initializr</a> — v1.1.6
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Stop Top - Sistema de Estacionamento</p>
+    <p style="font-size: 0.9rem; margin-top: 1rem;">Desenvolvido por: Rafael Adelungue, Gustavo Gonçalves, João Vitor Reis, Nathan Liberatti e Erick Yuji</p>
   </footer>
 </body>
 </html>
