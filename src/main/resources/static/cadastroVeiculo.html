@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Top - Cadastro de Veículo</title>
+    
+    <link rel="stylesheet" href="/src/main/resources/design/style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <div class="logo">🅿️ Stop Top</div>
+            <ul>
+                <li><a href="#cadastro">Cadastrar Cliente</a></li>
+                <li><a href="#pagamento">Pagamento</a></li>
+                <li><a href="#vagas">Vagas</a></li>
+                <li><a href="#gestao">Gestão</a></li>
+                <li><a href="#relatorio">Relatório</a></li>
+                <li><a href="#regras">Regras</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="panel">
+            
+            <h2 class="section-title">Adicionar Novo Veículo</h2>
+            <form>
+                <div class="form-grid">
+                    <input type="text" class="form-input" placeholder="Nome do Veículo">
+                    <input type="text" class="form-input" placeholder="Nome do Proprietário">
+                    
+                    <div class="file-upload-group">
+                        <input type="text" class="form-input" placeholder="Imagem do Veículo (Preferível para identificação)" readonly>
+                        <button type="button" class="btn-upload" title="Fazer upload de imagem">↓</button>
+                    </div>
+                    
+                    <input type="text" class="form-input" placeholder="Placa do Veículo">
+                </div>
+                
+                <textarea class="form-input form-textarea" placeholder="Descrição do Veículo"></textarea>
+                
+                <button type="submit" class="btn-action" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; margin-top: 0.5rem;">
+                    Adicionar Veículo
+                </button>
+            </form>
+
+            <h2 class="section-title" style="margin-top: 2.5rem;">Inventário</h2>
+            <div class="table-responsive">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagem</th>
+                            <th>Nome do Veículo</th>
+                            <th>Placa</th>
+                            <th>Proprietário</th>
+                            <th>Info</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Stop Top - Sistema de Estacionamento</p>
+        <p style="font-size: 0.9rem; margin-top: 1rem;">Desenvolvido por: Rafael Adelungue, Gustavo Gonçalves, João Vitor Reis, Nathan Liberatti e Erick Yuji</p>
+    </footer>
+
+</body>
+</html>
