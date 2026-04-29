@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stop Top - Pagamento</title>
+  <link rel="stylesheet" href="/src/main/resources/design/style.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <a href="index.html" style="color: white; text-decoration: none;">🅿️ Stop Top</a>
+      </div>
+      <ul>
+        <li><a href="cadastroVeiculo.html">Cadastrar Veículo</a></li>
+        <li><a href="pagamento.html">Pagamento</a></li>
+        <li><a href="#vagas">Vagas</a></li>
+        <li><a href="#gestao">Gestão</a></li>
+        <li><a href="#relatorio">Relatório</a></li>
+        <li><a href="#regras">Regras</a></li>
+      </ul>
+      <div class="navbar-right">
+        <div class="search-box">
+          <input type="text" placeholder="Bus">
+          <button>🔍</button>
+        </div>
+        <div class="nav-icons">
+          <a href="#notificacoes" title="Notificações">🔔</a>
+          <a href="index.html" title="Home">🏠</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="container">
+    <div class="panel">
+      <h2 class="section-title" style="text-align: center; font-size: 1.5rem; margin-bottom: 2rem;">Pagamento</h2>
+      
+      <form id="paymentForm" class="vehicle-form">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <input type="text" class="form-input" placeholder="Placa do Veículo:" id="placaVeiculo" required>
+        </div>
+        
+        <div class="form-grid">
+          <input type="text" class="form-input" placeholder="Veículo:" id="veiculo" required>
+          <input type="text" class="form-input" placeholder="Nome do Proprietário:" id="nomeProprietario" required>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <input type="text" class="form-input" placeholder="Entrada:" id="entrada" required>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <input type="text" class="form-input" placeholder="Saída (atual):" id="saida" required>
+        </div>
+
+        <div class="payment-summary">
+          <h3>Resumo do Pagamento:</h3>
+          <div class="total-display">
+            TOTAL A PAGAR: <span>R$ 36,90</span>
+          </div>
+          
+          <div class="payment-methods">
+            <h4>Método de Pagamento:</h4>
+            
+            <div class="method-option active">
+              <input type="radio" name="metodo" id="pix" value="PIX" checked>
+              <label for="pix">Pagar com PIX</label>
+            </div>
+            
+            <div class="method-option">
+              <input type="radio" name="metodo" id="cartao" value="Cartão de Crédito">
+              <label for="cartao">Cartão de Crédito</label>
+            </div>
+            
+            <div class="method-option">
+              <input type="radio" name="metodo" id="boleto" value="Boleto">
+              <label for="boleto">Boleto</label>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-action btn-full">FINALIZAR PAGAMENTO (R$ 36,90)</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Stop Top - Sistema de Estacionamento</p>
+    <p style="font-size: 0.9rem; margin-top: 1rem;">Desenvolvido por: Rafael Adelungue, Gustavo Gonçalves, João Vitor Reis, Nathan Liberatti e Erick Yuji</p>
+  </footer>
+
+  <script>
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        placaVeiculo: document.getElementById('placaVeiculo').value,
+        veiculo: document.getElementById('veiculo').value,
+        nomeProprietario: document.getElementById('nomeProprietario').value,
+        entrada: document.getElementById('entrada').value,
+        saida: document.getElementById('saida').value,
+        valorTotal: 36.90,
+        metodoPagamento: document.querySelector('input[name="metodo"]:checked').value
+      };
+
+      fetch('/pagamentos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Pagamento realizado com sucesso!');
+          window.location.href = 'index.html';
+        } else {
+          alert('Erro ao processar pagamento.');
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro de conexão com o servidor.');
+      });
+    });
+
+    // Lógica visual para os radio buttons
+    const radios = document.querySelectorAll('input[name="metodo"]');
+    radios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        document.querySelectorAll('.method-option').forEach(opt => {
+          opt.classList.remove('active');
+        });
+        
+        if (this.checked) {
+          this.closest('.method-option').classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
