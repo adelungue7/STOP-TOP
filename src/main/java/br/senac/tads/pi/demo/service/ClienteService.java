@@ -2,9 +2,12 @@ package br.senac.tads.pi.demo.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import br.senac.tads.pi.demo.model.Cliente;
 import br.senac.tads.pi.demo.repository.ClienteRepository;
 
+@Service
 public class ClienteService {
 
     private final ClienteRepository repository;

@@ -3,6 +3,9 @@ package br.senac.tads.pi.demo.model;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 
@@ -15,12 +18,12 @@ public class Cliente {
 
     private String nome;
     private String email;
-    private String dataNascimento;
+    private LocalDate dataNascimento;
     private String telefone;
     private String endereco;
     private String senha;
 
-    @Enumerated(EnumType.STRING) //salva "MENSAL" ou "DIARIO" no banco ao invés de 0 e 1
+    @Enumerated(EnumType.STRING) // salva "MENSAL" ou "DIARIO" no banco ao invés de 0 e 1
     private TipoPlano tipoPlano;
 
     public String getCpf() {
@@ -47,11 +50,11 @@ public class Cliente {
         this.email = email;
     }
 
-    public String getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
