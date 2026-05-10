@@ -300,3 +300,81 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ==========================================
+       CSS ADICIONADO — sinalizado abaixo
+    ========================================== */
+ 
+    /* Linhas da tabela — ADICIONADO */
+    .inventory-table td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid #f5e6e6;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .inventory-table tr:last-child td { border-bottom: none; }
+    .inventory-table tr:hover td { background-color: #fdf5f5; }
+ 
+    /* Select estilizado igual aos inputs — ADICIONADO */
+    select.form-input {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239c7e7e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+ 
+    /* Badge do plano na tabela — ADICIONADO */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .badge-mensal { background: #d4edda; color: #155724; }
+    .badge-diario { background: #fff3cd; color: #856404; }
+ 
+    /* Botão de deletar na tabela — ADICIONADO */
+    .btn-delete {
+      background: none;
+      border: none;
+      color: #c0392b;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .btn-delete:hover { background: #fbe6e6; }
+ 
+    /* Estado vazio / carregando na tabela — ADICIONADO */
+    .table-status td {
+      text-align: center;
+      padding: 2rem;
+      color: #9c7e7e;
+      font-size: 0.9rem;
+    }
+ 
+    /* Toast de feedback — ADICIONADO */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.85rem 1.5rem;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.35s;
+      pointer-events: none;
+    }
+    .toast.success { background: #27ae60; }
+    .toast.error   { background: #c0392b; }
+    .toast.show    { opacity: 1; }
+ 
+    /* Espaço entre painéis — ADICIONADO */
+    .panel + .panel { margin-top: 1.5rem; }

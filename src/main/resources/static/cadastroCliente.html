@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Top - Cadastro de Cliente</title>
+
+    <link rel="stylesheet" href="/design/style.css">
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="container">
+            <div class="logo">
+                <a href="/index.html"
+                    style="text-decoration: none; color: inherit; font-size: inherit; font-weight: inherit;">
+                    🅿️ Stop Top
+                </a>
+            </div>
+            <ul>
+                <li><a href="cadastroCliente.html">Cadastrar Cliente</a></li>
+                <li><a href="pagamento.html">Pagamento</a></li>
+                <li><a href="#vagas">Vagas</a></li>
+                <li><a href="#gestao">Gestão</a></li>
+                <li><a href="#relatorio">Relatório</a></li>
+                <li><a href="#regras">Regras</a></li>
+            </ul>
+            <div class="navbar-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Bus">
+                    <button>🔍</button>
+                </div>
+                <div class="nav-icons">
+                    <a href="#notificacoes" title="Notificações">🔔</a>
+                    <a href="#home" title="Home">🏠</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container">
+
+        <!-- FORMULÁRIO DE CADASTRO -->
+        <div class="panel">
+            <p class="section-title">Adicionar Novo Cliente</p>
+
+            <!-- Upload de imagem -->
+            <div class="file-upload-group" style="margin-bottom: 1rem;">
+                <input type="text" class="form-input" id="img-nome"
+                    placeholder="Imagem do Cliente (Preferível para identificação)" readonly>
+                <input type="file" id="img-file" accept="image/*" style="display: none;">
+                <button class="btn-upload" onclick="document.getElementById('img-file').click()">&#8595;</button>
+            </div>
+
+            <!-- Campos em grid 2 colunas -->
+            <div class="form-grid">
+                <input type="text" class="form-input" id="nome" placeholder="Nome do Cliente">
+                <input type="text" class="form-input" id="cpf" placeholder="CPF">
+                <input type="text" class="form-input" id="endereco" placeholder="Endereço">
+                <input type="email" class="form-input" id="email" placeholder="Email">
+                <input type="date" class="form-input" id="dataNascimento">
+                <input type="tel" class="form-input" id="telefone" placeholder="Telefone">
+            </div>
+
+            <!--
+        ADICIONADO: select estilizado com os valores do enum TipoPlano.
+        Os values "MENSAL" e "DIARIO" devem bater exatamente com o enum no backend.
+      -->
+            <select class="form-input" id="tipoPlano" style="margin-bottom: 1rem;">
+                <option value="">Plano escolhido</option>
+                <option value="MENSAL">Mensal</option>
+                <option value="DIARIO">Diário</option>
+            </select>
+
+            <button class="btn-action btn-full" onclick="cadastrarCliente()">
+                Adicionar Cliente
+            </button>
+        </div>
+
+        <!-- TABELA DE CLIENTES -->
+        <div class="panel">
+            <p class="section-title">Clientes Cadastrados</p>
+            <div class="table-responsive">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Endereço</th>
+                            <th>Plano</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-body">
+                        <tr class="table-status">
+                            <td colspan="7">Carregando clientes...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Stop Top - Sistema de Estacionamento</p>
+        <p style="font-size: 0.9rem; margin-top: 1rem;">Desenvolvido por: Rafael Adelungue, Gustavo Gonçalves, João
+            Vitor Reis, Nathan Liberatti e Erick Yuji</p>
+    </footer>
+
+    <!-- Toast de feedback — ADICIONADO -->
+    <div class="toast" id="toast"></div>
+
+    <script src="cadastroCliente.js"></script>
+
+</body>
+
+</html>
