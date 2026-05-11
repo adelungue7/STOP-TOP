@@ -1,4 +1,4 @@
-const apiUrl = '/veiculos';
+const apiUrl = 'http://localhost:8080/veiculos';
         
 document.addEventListener('DOMContentLoaded', () => {
     // Carrega a tabela assim que a página abre
