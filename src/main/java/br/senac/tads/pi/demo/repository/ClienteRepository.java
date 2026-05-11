@@ -7,5 +7,6 @@ import br.senac.tads.pi.demo.model.Cliente;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, String> {
-    
+    // Novo método para a validação do Veículo
+    boolean existsByNome(String nome);
 }
