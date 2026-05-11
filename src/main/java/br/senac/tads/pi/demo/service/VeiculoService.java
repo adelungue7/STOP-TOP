@@ -1,6 +1,7 @@
 package br.senac.tads.pi.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import br.senac.tads.pi.demo.model.Veiculo;
 import br.senac.tads.pi.demo.repository.ClienteRepository;
@@ -17,29 +18,41 @@ public class VeiculoService {
         this.clienteRepository = clienteRepository;
     }
 
-    // Criar novo veículo
+    // Retorna true se o cliente existir
+    public boolean proprietarioExiste(String nomeProprietario) {
+        return clienteRepository.existsByNome(nomeProprietario);
+    }
+
+    // Retorna true se a placa existir (e ignora se for a placa do próprio veículo sendo editado)
+    public boolean placaJaCadastrada(String placa, Long idIgnorado) {
+        Optional<Veiculo> vEncontrado = veiculoRepository.findByPlaca(placa);
+        
+        if (vEncontrado.isPresent()) {
+            // Se encontrou a placa, mas é o mesmo ID que está sendo atualizado, permite
+            if (idIgnorado != null && vEncontrado.get().getId().equals(idIgnorado)) {
+                return false; 
+            }
+            return true; // A placa pertence a outro veículo
+        }
+        return false;
+    }
+
     public Veiculo criarVeiculo(Veiculo veiculo) {
-        validarRegras(veiculo, null);
         return veiculoRepository.save(veiculo);
     }
 
-    // Listar todos os veículos
     public List<Veiculo> listarTodos() {
         return veiculoRepository.findAll();
     }
 
-    // Buscar veículo por ID
     public Veiculo buscarPorId(Long id) {
         return veiculoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Veículo não encontrado: " + id));
     }
 
-    // Atualizar veículo
     public Veiculo atualizar(Long id, Veiculo dadosNovos) {
         Veiculo existente = buscarPorId(id);
         
-        validarRegras(dadosNovos, id);
-
         existente.setNomeVeiculo(dadosNovos.getNomeVeiculo());
         existente.setNomeProprietario(dadosNovos.getNomeProprietario());
         existente.setPlaca(dadosNovos.getPlaca());
@@ -49,24 +62,7 @@ public class VeiculoService {
         return veiculoRepository.save(existente);
     }
 
-    // Deletar veículo
     public void deletar(Long id) {
         veiculoRepository.deleteById(id);
-    }
-
-    // Validações de negócio centralizadas
-    private void validarRegras(Veiculo veiculo, Long idIgnorado) {
-        // Validação: Proprietário precisa existir na base de clientes
-        if (!clienteRepository.existsByNome(veiculo.getNomeProprietario())) {
-            throw new RuntimeException("Proprietário não encontrado. O cliente deve estar cadastrado no sistema.");
-        }
-
-        // Validação: Placa não pode ser duplicada no banco
-        veiculoRepository.findByPlaca(veiculo.getPlaca()).ifPresent(vEncontrado -> {
-            // Se for atualização, ignora a placa do próprio veículo que está sendo editado
-            if (idIgnorado == null || !vEncontrado.getId().equals(idIgnorado)) {
-                throw new RuntimeException("Já existe um veículo cadastrado com a placa: " + veiculo.getPlaca());
-            }
-        });
     }
 }

@@ -17,45 +17,57 @@ public class VeiculoController {
         this.service = service;
     }
 
-    // Cadastrar novo veículo
+    // Cadastrar novo veículo usando IF para validação
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody Veiculo veiculo) {
-        try {
-            Veiculo salvo = service.criarVeiculo(veiculo);
-            return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
-        } catch (RuntimeException e) {
-            // Retorna erro 400 caso caia em alguma regra de negócio (ex: placa duplicada)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        
+        // 1. Verifica se o proprietário existe
+        if (!service.proprietarioExiste(veiculo.getNomeProprietario())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Proprietário não encontrado. O cliente deve estar cadastrado no sistema.");
         }
+
+        // 2. Verifica se a placa já existe
+        if (service.placaJaCadastrada(veiculo.getPlaca(), null)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Já existe um veículo cadastrado com a placa: " + veiculo.getPlaca());
+        }
+
+        Veiculo salvo = service.criarVeiculo(veiculo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
-    // Listar todos os veículos
     @GetMapping
     public ResponseEntity<List<Veiculo>> listarTodos() {
         return ResponseEntity.ok(service.listarTodos());
     }
 
-    // Buscar veículo por ID
     @GetMapping("/{id}")
     public ResponseEntity<Veiculo> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
-    // Atualizar veículo
+    // Atualizar veículo usando IF para validação
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Veiculo veiculo) {
-        try {
-            Veiculo atualizado = service.atualizar(id, veiculo);
-            return ResponseEntity.ok(atualizado);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        
+        if (!service.proprietarioExiste(veiculo.getNomeProprietario())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Proprietário não encontrado. O cliente deve estar cadastrado no sistema.");
         }
+
+        if (service.placaJaCadastrada(veiculo.getPlaca(), id)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Já existe um veículo cadastrado com a placa: " + veiculo.getPlaca());
+        }
+
+        Veiculo atualizado = service.atualizar(id, veiculo);
+        return ResponseEntity.ok(atualizado);
     }
 
-    // Deletar veículo
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletar(id);
-        return ResponseEntity.noContent().build(); // Retorna 204 No Content
+        return ResponseEntity.noContent().build();
     }
 }
