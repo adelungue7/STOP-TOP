@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Top - Cálculo de Permanência</title>
+    <link rel="stylesheet" href="/design/style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <div class="logo">🅿️ Stop Top</div>
+            <ul>
+                <li><a href="cadastroVeiculo.html">Cadastrar Cliente</a></li>
+                <li><a href="pagamento.html">Pagamento</a></li>
+                <li><a href="#vagas">Vagas</a></li>
+                <li><a href="#gestao">Gestão</a></li>
+                <li><a href="#relatorio">Relatório</a></li>
+                <li><a href="#regras">Regras</a></li>
+                <li><a href="calculoPermanencia.html">Cálculo</a></li>
+            </ul>
+            <div class="navbar-right">
+        <div class="search-box">
+          <input type="text" placeholder="Bus">
+          <button>🔍</button>
+        </div>
+        <div class="nav-icons">
+          <a href="#notificacoes" title="Notificações">🔔</a>
+          <a href="#home" title="Home">🏠</a>
+        </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="panel">
+            <h2 class="section-title" style="text-align: center; font-size: 1.5rem; margin-bottom: 2rem;">Cálculo de permanência</h2>
+            
+            <form id="formCalculo">
+                <div class="form-grid">
+                    <div>
+                        <label style="font-weight: bold;">Placa do Veículo:</label>
+                        <input type="text" id="placaVeiculo" class="form-input" placeholder="ABC-1234" required>
+                    </div>
+                    <div>
+                        <label style="font-weight: bold;">Valor Hora(R$):</label>
+                        <input type="number" step="any" id="valorHora" class="form-input" placeholder="A definir." required>
+                    </div>
+                    <div>
+                        <label style="font-weight: bold;">Hora de Entrada:</label>
+                        <input type="datetime-local" id="horaEntrada" class="form-input" required>
+                    </div>
+                    <div>
+                        <label style="font-weight: bold;">Hora de Saída:</label>
+                        <input type="datetime-local" id="horaSaida" class="form-input" required>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <label style="font-weight: bold; font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">Tempo de Carência (minutos):</label>
+                    <div class="carencia-container">
+                        <input type="number" id="carenciaMinutos" value="15" required style="width: 100px;">
+                        <span>MINUTOS</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-action btn-full" style="background-color: #b31212; font-size: 1.8rem; font-weight: bold;">
+                    Calcular
+                </button>
+            </form>
+
+            <div id="painelResultado" class="resultado-card">
+                <p style="font-size: 1.2rem;">Tempo total de permanência</p>
+                <h2 id="lblTempoTotal">--</h2>
+                <p style="font-size: 1.2rem; margin-top: 1.5rem;">Valor total a ser pago</p>
+                <div id="lblValorTotal" class="valor-final">R$ 0,00</div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('formCalculo').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede a página de piscar/recarregar
+
+            console.log("Botão clicado, iniciando fetch...");
+
+            const requestData = {
+                placaVeiculo: document.getElementById('placaVeiculo').value,
+                valorHora: parseFloat(document.getElementById('valorHora').value),
+                horaEntrada: document.getElementById('horaEntrada').value, 
+                horaSaida: document.getElementById('horaSaida').value,
+                carenciaMinutos: parseInt(document.getElementById('carenciaMinutos').value)
+            };
+
+            console.log("Dados enviados:", requestData);
+
+            fetch('/permanencias/calcular', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                console.log("Status da resposta:", response.status);
+                if (!response.ok) {
+                    throw new Error('Erro HTTP: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Dados recebidos do Java:", data);
+                
+                // Atualiza os textos
+                document.getElementById('lblTempoTotal').textContent = data.tempoTotalFormatado;
+                
+                const valorFormatado = data.valorTotalPago.toLocaleString('pt-BR', { 
+                    style: 'currency', 
+                    currency: 'BRL' 
+                });
+                document.getElementById('lblValorTotal').textContent = valorFormatado;
+                
+                // Força a caixa cinza a aparecer
+                document.getElementById('painelResultado').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Erro no Fetch:', error);
+                alert("Falha ao comunicar com o servidor! Pressione F12 e olhe a aba Console para detalhes.");
+            });
+        });
+    </script>
+</body>
+</html>

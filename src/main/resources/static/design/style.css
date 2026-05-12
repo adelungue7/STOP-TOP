@@ -378,3 +378,69 @@
  
     /* Espaço entre painéis — ADICIONADO */
     .panel + .panel { margin-top: 1.5rem; }
+
+    /* =========================================================
+   CÁLCULO DE PERMANÊNCIA (CARÊNCIA E RESULTADO)
+   ========================================================= */
+
+/* Bloco rosa claro do Tempo de Carência */
+.carencia-container { 
+  background-color: #fbe6e6; 
+  text-align: center; 
+  padding: 1.5rem; 
+  border-radius: 6px; 
+  margin-bottom: 1.5rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.carencia-container input { 
+  background: transparent; 
+  border: none; 
+  font-size: 2.5rem; 
+  text-align: center; 
+  width: 100px; 
+  outline: none; 
+  color: #000;
+}
+
+.carencia-container span { 
+  font-size: 2.5rem; 
+  color: #000; 
+}
+
+/* Painel Cinza Escuro de Resultado */
+.resultado-card {
+  background-color: #707070; /* Cinza do protótipo (mesma cor da navbar) */
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 2rem auto 0;
+  max-width: 500px;
+  display: none; /* Inicia oculto, o JavaScript vai mostrar depois do cálculo */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.resultado-card p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #f0f0f0;
+}
+
+.resultado-card h2 { 
+  font-size: 2.2rem; 
+  margin: 0.5rem 0 1.5rem 0; 
+  font-weight: bold; 
+  color: white;
+}
+
+/* Valor verde brilhante do protótipo */
+.valor-final { 
+  color: #00ff00; 
+  font-size: 2.5rem; 
+  font-weight: bold; 
+  margin-top: 0.5rem;
+}
