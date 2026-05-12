@@ -444,3 +444,112 @@
   font-weight: bold; 
   margin-top: 0.5rem;
 }
+
+/* tela de gestão e regras, com divisão dos paineis */
+    .split-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+    .full-width-input {
+        width: 100%;
+    }
+    .three-cols {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .margin-top-btn {
+        margin-top: 1rem;
+    }
+    @media (max-width: 992px) {
+        .split-layout {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+    }
+    .rules-header {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .rules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    .rule-card {
+        background: #ffffff;
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .rule-card-header {
+        font-weight: bold;
+        font-size: 1.05rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #c0392b;
+    }
+    .rule-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    .rule-input-group {
+        margin-bottom: 1.2rem;
+    }
+    .rule-input-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #555;
+        font-size: 0.9rem;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .input-with-symbol {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .symbol-left {
+        position: absolute;
+        left: 1rem;
+        color: #9c7e7e;
+        font-weight: 600;
+    }
+    .symbol-right {
+        position: absolute;
+        right: 1rem;
+        color: #9c7e7e;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    .pad-left {
+        padding-left: 2.8rem !important;
+    }
+    .pad-right {
+        padding-right: 3rem !important;
+    }
+    .pad-right-large {
+        padding-right: 4.5rem !important;
+    }
+    .rules-save-btn {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+        padding: 1rem;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    @media (max-width: 600px) {
+        .rule-form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+ 
