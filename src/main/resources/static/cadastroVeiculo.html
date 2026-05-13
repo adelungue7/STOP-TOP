@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stop Top - Cadastro de Veículo</title>
-
     <link rel="stylesheet" href="/design/style.css">
 </head>
 
@@ -35,25 +34,44 @@
         <div class="panel">
 
             <h2 class="section-title">Adicionar Novo Veículo</h2>
-            <form>
-                <div class="form-grid">
-                    <input type="text" class="form-input" placeholder="Nome do Veículo">
-                    <input type="text" class="form-input" placeholder="Nome do Proprietário">
 
-                    <div class="file-upload-group">
-                        <input type="text" class="form-input"
-                            placeholder="Imagem do Veículo (Preferível para identificação)" readonly>
-                        <button type="button" class="btn-upload" title="Fazer upload de imagem">↓</button>
-                    </div>
+            <form id="formVeiculo">
 
-                    <input type="text" class="form-input" placeholder="Placa do Veículo">
+                <input type="hidden" id="veiculoId">
+
+                <div class="edit-mode-banner" id="editModeBanner">
+                    Modo edição ativo — altere os campos e clique em "Atualizar Veículo".
                 </div>
 
-                <textarea class="form-input form-textarea" placeholder="Descrição do Veículo"></textarea>
+                <div class="form-grid">
+                    <input type="text" class="form-input" id="nomeVeiculo"
+                           placeholder="Nome do Veículo">
 
-                <button type="submit" class="btn-action"
-                    style="width: 100%; padding: 1.2rem; font-size: 1.1rem; margin-top: 0.5rem;">
+                    <input type="text" class="form-input" id="nomeProprietario"
+                           placeholder="Nome do Proprietário">
+
+                    <div class="file-upload-group">
+                        <input type="text" class="form-input" id="imagemVeiculo"
+                               placeholder="Imagem do Veículo (URL ou clique em ↓ para upload)">
+                        <input type="file" id="imagemArquivo" accept="image/*" style="display: none;">
+                        <button type="button" class="btn-upload" title="Fazer upload de imagem"
+                                onclick="document.getElementById('imagemArquivo').click()">↓</button>
+                    </div>
+
+                    <input type="text" class="form-input" id="placaVeiculo"
+                           placeholder="Placa do Veículo">
+                </div>
+
+                <textarea class="form-input form-textarea" id="descricaoVeiculo"
+                          placeholder="Descrição do Veículo"></textarea>
+
+                <button type="submit" id="btnSalvar" class="btn-action"
+                        style="width: 100%; padding: 1.2rem; font-size: 1.1rem; margin-top: 0.5rem;">
                     Adicionar Veículo
+                </button>
+
+                <button type="button" id="btnCancelarEdicao">
+                    ✕ Cancelar Edição
                 </button>
             </form>
 
@@ -71,7 +89,10 @@
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tabelaVeiculosBody">
+                        <tr class="table-status">
+                            <td colspan="7">Carregando veículos...</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -85,7 +106,9 @@
             Vitor Reis, Nathan Liberatti e Erick Yuji</p>
     </footer>
 
-    <script src="/js/cadastroVeiculo.js"></script>
+    <div class="toast" id="toast"></div>
+
+    <script src="scripts/cadastroVeiculo.js"></script>
 
 </body>
 
