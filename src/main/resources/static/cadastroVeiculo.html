@@ -21,7 +21,7 @@
             <ul>
                 <li><a href="cadastroCliente.html">Cadastrar Cliente</a></li>
                 <li><a href="pagamento.html">Pagamento</a></li>
-                <li><a href="#vagas">Vagas</a></li>
+                <li><a href="cadastroVeiculo.html">Cadastramento de Veículo</a></li>
                 <li><a href="gestao.html">Gestão</a></li>
                 <li><a href="#relatorio">Relatório</a></li>
                 <li><a href="regras.html">Regras</a></li>
@@ -39,38 +39,30 @@
 
                 <input type="hidden" id="veiculoId">
 
-                <div class="edit-mode-banner" id="editModeBanner">
-                    Modo edição ativo — altere os campos e clique em "Atualizar Veículo".
+                <div class="edit-mode-banner" id="editModeBanner" style="display: none; background: #fff3cd; border: 1px solid #f0ad4e; color: #856404; padding: 0.6rem 1rem; border-radius: 6px; margin-bottom: 0.8rem; font-size: 0.9rem;">
+                    ✏️ Modo edição ativo — altere os campos e clique em "Atualizar Veículo".
                 </div>
 
                 <div class="form-grid">
-                    <input type="text" class="form-input" id="nomeVeiculo"
-                           placeholder="Nome do Veículo">
-
-                    <input type="text" class="form-input" id="nomeProprietario"
-                           placeholder="Nome do Proprietário">
+                    <input type="text" class="form-input" id="nomeVeiculo" placeholder="Nome do Veículo">
+                    <input type="text" class="form-input" id="nomeProprietario" placeholder="Nome do Proprietário">
 
                     <div class="file-upload-group">
-                        <input type="text" class="form-input" id="imagemVeiculo"
-                               placeholder="Imagem do Veículo (URL ou clique em ↓ para upload)">
+                        <input type="text" class="form-input" id="imagemVeiculo" placeholder="Imagem do Veículo (URL ou clique em ↓ para upload)">
                         <input type="file" id="imagemArquivo" accept="image/*" style="display: none;">
-                        <button type="button" class="btn-upload" title="Fazer upload de imagem"
-                                onclick="document.getElementById('imagemArquivo').click()">↓</button>
+                        <button type="button" class="btn-upload" title="Fazer upload de imagem" onclick="document.getElementById('imagemArquivo').click()">↓</button>
                     </div>
 
-                    <input type="text" class="form-input" id="placaVeiculo"
-                           placeholder="Placa do Veículo">
+                    <input type="text" class="form-input" id="placaVeiculo" placeholder="Placa do Veículo">
                 </div>
 
-                <textarea class="form-input form-textarea" id="descricaoVeiculo"
-                          placeholder="Descrição do Veículo"></textarea>
+                <textarea class="form-input form-textarea" id="descricaoVeiculo" placeholder="Descrição do Veículo"></textarea>
 
-                <button type="submit" id="btnSalvar" class="btn-action"
-                        style="width: 100%; padding: 1.2rem; font-size: 1.1rem; margin-top: 0.5rem;">
+                <button type="submit" id="btnSalvar" class="btn-action" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; margin-top: 0.5rem;">
                     Adicionar Veículo
                 </button>
 
-                <button type="button" id="btnCancelarEdicao">
+                <button type="button" id="btnCancelarEdicao" class="btn-action" style="display: none; width: 100%; padding: 1.2rem; font-size: 1.1rem; margin-top: 0.5rem; background-color: #777;">
                     ✕ Cancelar Edição
                 </button>
             </form>
