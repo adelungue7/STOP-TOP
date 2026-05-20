@@ -63,14 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ── GET /veiculos — Carregar e renderizar tabela ──────────────────────────────
 
+// ── GET /veiculos — Carregar e renderizar tabela ──────────────────────────────
+
 async function carregarVeiculos() {
     const tbody = document.getElementById('tabelaVeiculosBody');
     tbody.innerHTML = '<tr class="table-status"><td colspan="7">Carregando veículos...</td></tr>';
 
     try {
         const resposta = await fetch(API_URL);
-
-        // FIX 3: Verificação explícita do status HTTP
         if (!resposta.ok) throw new Error('Erro na resposta do servidor');
 
         const veiculos = await resposta.json();
@@ -80,33 +80,33 @@ async function carregarVeiculos() {
             return;
         }
 
-        //  FIX 4: Renderização usando os nomes de campo corretos da entity Veiculo.java
-        tbody.innerHTML = veiculos.map(v => {
-            // Fallback de imagem caso não haja imagem cadastrada
-            const imgSrc = v.imagemVeiculo
-                ? v.imagemVeiculo
-                : 'https://placehold.co/50x50/cccccc/666666?text=🚗';
+        tbody.innerHTML = veiculos.map((v,index) => {
+
+            const numeroDaLinha = index + 1;
+            const imgSrc = v.imagemVeiculo ? v.imagemVeiculo : 'https://placehold.co/50x50/cccccc/666666?text=🚗';
 
             return `
                 <tr>
-                    <td>${v.id}</td>
+                    <td><strong>${numeroDaLinha}</strong></td>
+                    
                     <td>
-                        <img src="${imgSrc}"
-                             alt="Veículo ${v.nomeVeiculo}"
-                             style="width:50px;height:50px;border-radius:4px;object-fit:cover;">
+                        <img src="${imgSrc}" alt="Veículo" style="width:50px;height:50px;border-radius:4px;object-fit:cover;">
                     </td>
+                    
                     <td>${v.nomeVeiculo   || '-'}</td>
                     <td>${v.placa         || '-'}</td>
                     <td>${v.nomeProprietario || '-'}</td>
-                    <td>${v.descricao     || '-'}</td>
+                    
+                    <td>${v.descricao || '-'}</td>
+                    
                     <td style="display:flex;gap:0.5rem;justify-content:flex-start;padding-top:1.2rem;">
                         <button onclick="editarVeiculo(${v.id})"
                                 style="background:#f1c40f;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;">
-                             Editar
+                            ✏️ Editar
                         </button>
                         <button onclick="excluirVeiculo(${v.id})"
                                 style="background:#c0392b;color:#fff;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;">
-                             Excluir
+                            🗑️ Excluir
                         </button>
                     </td>
                 </tr>
