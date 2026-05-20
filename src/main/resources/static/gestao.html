@@ -1,130 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
- 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stop Top - Gestão</title>
- 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stop Top - Gestão de Mensalistas</title>
   <link rel="stylesheet" href="/design/style.css">
 </head>
- 
 <body>
- 
+
 <nav>
-<div class="container">
-<div class="logo">
-<a href="/index.html"
-         style="text-decoration: none; color: inherit; font-size: inherit; font-weight: inherit;">
-        🅿️ Stop Top
-</a>
-</div>
-<ul>
-<li><a href="cadastroCliente.html">Cadastrar Cliente</a></li>
-<li><a href="pagamento.html">Pagamento</a></li>
-<li><a href="cadastroVeiculo.html">Cadastramento de Veículo</a></li>
-<li><a href="gestao.html">Gestão</a></li>
-<li><a href="#relatorio">Relatório</a></li>
-<li><a href="regras.html">Regras</a></li>
-<li><a href="calculoPermanencia.html">Cálculo</a></li>
-</ul>
-<div class="navbar-right">
-<div class="search-box">
-<input type="text" placeholder="Bus">
-<button>🔍</button>
-</div>
-<div class="nav-icons">
-<a href="#notificacoes" title="Notificações">🔔</a>
-<a href="#home" title="Home">🏠</a>
-</div>
-</div>
-</div>
+  <div class="container">
+    <div class="logo"><a href="/index.html" style="text-decoration:none;color:inherit;">🅿️ Stop Top</a></div>
+    <ul>
+      <li><a href="cadastroCliente.html">Cadastrar Cliente</a></li>
+      <li><a href="pagamento.html">Pagamento</a></li>
+      <li><a href="cadastroVeiculo.html">Cadastramento de Veículo</a></li>
+      <li><a href="gestao.html">Gestão</a></li>
+      <li><a href="#relatorio">Relatório</a></li>
+      <li><a href="regras.html">Regras</a></li>
+      <li><a href="calculoPermanencia.html">Cálculo</a></li>
+    </ul>
+  </div>
 </nav>
- 
+
 <div class="container">
- 
   <div class="panel">
-<div class="form-grid" style="gap: 3rem; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
- 
-      <div>
-<p class="section-title">Adicionar Novo Mensalista <span style="color: #888; font-size: 0.9rem; cursor: pointer;">ⓘ</span></p>
- 
-        <div class="form-grid">
-<input type="text" class="form-input" id="nomeMensalista" placeholder="Nome Completo">
-<input type="text" class="form-input" id="cpfCnpj" placeholder="CPF / CNPJ">
-</div>
- 
-        <div class="form-grid">
-<input type="tel" class="form-input" id="telefoneMensalista" placeholder="Telefone">
-<input type="email" class="form-input" id="emailMensalista" placeholder="E-mail">
-</div>
- 
-        <input type="text" class="form-input" id="enderecoMensalista" placeholder="Endereço Completo" style="width: 100%;">
-</div>
- 
-      <div>
-<p class="section-title">Assinatura</p>
- 
-        <div class="form-grid">
-<input type="text" class="form-input" id="placaPrincipal" placeholder="Placa Principal">
-<input type="text" class="form-input" id="placaSecundaria" placeholder="Placa Secundária (Opcional)">
-</div>
- 
-        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-<select class="form-input" id="tipoPlanoGestao">
-<option value="" disabled selected>Tipo de Plano</option>
-<option value="MENSAL">Mensal</option>
-<option value="TRIMESTRAL">Trimestral</option>
-<option value="SEMESTRAL">Semestral</option>
-</select>
-<input type="text" class="form-input" id="dataInicio" placeholder="Data de início" onfocus="(this.type='date')" onblur="(this.type='text')">
-<input type="text" class="form-input" id="dataFim" placeholder="Data de Fim (sHouver)" onfocus="(this.type='date')" onblur="(this.type='text')">
-</div>
- 
-        <button class="btn-action btn-full" style="margin-top: 1rem;" onclick="criarAssinatura()">
-          Criar Assinatura
-</button>
-</div>
- 
+    <form id="formGestao" onsubmit="event.preventDefault(); salvarAssinatura();">
+      <div class="form-grid" style="gap: 2rem;">
+        <div>
+          <p class="section-title">Dados do Mensalista</p>
+          <input type="hidden" id="modoEdicaoCpf">
+
+          <div class="form-grid">
+            <input type="text" class="form-input" id="nomeMensalista" placeholder="Nome Completo" required>
+            <input type="text" class="form-input" id="cpfCnpj" placeholder="CPF" maxlength="14" oninput="maskCPF(this)" required>
+          </div>
+          <div class="form-grid">
+            <input type="tel" class="form-input" id="telefoneMensalista" placeholder="Telefone" required>
+            <input type="email" class="form-input" id="emailMensalista" placeholder="E-mail" required>
+          </div>
+          <input type="text" class="form-input" id="enderecoMensalista" placeholder="Endereço Completo" style="width: 100%;" required>
+        </div>
+
+        <div>
+          <p class="section-title">Plano e Veículo</p>
+          <div class="form-grid">
+            <input type="text" class="form-input" id="placaPrincipal" placeholder="Placa (ABC-1234)" maxlength="8" oninput="maskPlaca(this)" required>
+            <select class="form-input" id="tipoPlanoGestao" onchange="calcularDataFim()" required>
+              <option value="" disabled selected>Escolha o Plano</option>
+              <option value="MENSAL">Mensal (30 dias)</option>
+              <option value="TRIMESTRAL">Trimestral (90 dias)</option>
+              <option value="SEMESTRAL">Semestral (180 dias)</option>
+            </select>
+          </div>
+          <div class="form-grid">
+            <input type="date" class="form-input" id="dataInicio" onchange="calcularDataFim()" required title="Data de Início">
+            <input type="date" class="form-input" id="dataFim" readonly title="Fim Previsto (Automático)" style="background-color: #eee; cursor: not-allowed;">
+          </div>
+
+          <button type="submit" class="btn-action btn-full" id="btnSalvar" style="margin-top:10px;">Salvar Assinatura</button>
+          <button type="button" class="btn-action btn-full" id="btnCancelar" onclick="cancelarEdicao()" style="display:none; margin-top:5px; background:#777;">Cancelar Edição</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <p class="section-title">Lista de Mensalistas Ativos</p>
+    <div class="table-responsive">
+      <table class="inventory-table">
+        <thead>
+        <tr>
+          <th>CPF</th>
+          <th>Nome</th>
+          <th>Placa</th>
+          <th>Plano</th>
+          <th>Vencimento</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="tabela-mensalistas"></tbody>
+      </table>
     </div>
+  </div>
 </div>
- 
-  <div class="panel">
-<p class="section-title">Lista de Mensalistas</p>
-<div class="table-responsive">
-<table class="inventory-table">
-<thead>
-<tr>
-<th>ID</th>
-<th>Nome</th>
-<th>CPF / CNPJ</th>
-<th>Placa Principal</th>
-<th>Status</th>
-<th>Vencimento</th>
-<th>Ações</th>
-</tr>
-</thead>
-<tbody id="tabela-mensalistas">
-<tr class="table-status">
-<td colspan="7">Nenhum mensalista cadastrado ainda.</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
- 
-</div>
- 
-<footer>
-<p>&copy; 2026 Stop Top - Sistema de Estacionamento</p>
-<p style="font-size: 0.9rem; margin-top: 1rem;">Desenvolvido por: Rafael Adelungue, Gustavo Gonçalves, João
-    Vitor Reis, Nathan Liberatti e Erick Yuji</p>
-</footer>
- 
-<div class="toast" id="toast"></div>
- 
-<script src="#"></script>
- 
+
+<div id="toast" class="toast"></div>
+<script src="scripts/gestao.js"></script>
 </body>
- 
 </html>
