@@ -22,6 +22,7 @@ public class Pagamento {
     private String entrada;
     private String saida;
     private BigDecimal valorTotal;
+    private BigDecimal valorHora;
     private String metodoPagamento;
 
     public Long getId() {
@@ -78,6 +79,14 @@ public class Pagamento {
 
     public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public BigDecimal getValorHora() {
+        return valorHora;
+    }
+
+    public void setValorHora(BigDecimal valorHora) {
+        this.valorHora = valorHora;
     }
 
     public String getMetodoPagamento() {
