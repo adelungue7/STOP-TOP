@@ -23,7 +23,6 @@
         document.getElementById(id).value = '';
       });
       document.getElementById('tipoPlano').value = '';
-      document.getElementById('img-nome').value  = '';
     }
  
     // ── Carregar lista de clientes — GET /clientes ───────────
@@ -119,13 +118,6 @@
         mostrarToast('Erro ao remover cliente.', 'error');
       }
     }
- 
-    // ── Listener do input de arquivo ─────────────────────────
- 
-    document.getElementById('img-file').addEventListener('change', function () {
-      const arquivo = this.files[0];
-      document.getElementById('img-nome').value = arquivo ? arquivo.name : '';
-    });
  
     // ── Inicialização ─────────────────────────────────────────
     carregarClientes();

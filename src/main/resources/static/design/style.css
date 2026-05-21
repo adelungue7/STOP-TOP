@@ -228,32 +228,6 @@
   margin-bottom: 1rem;
 }
 
-/* Grupo de Upload de Imagem (Input + Botão lateral) */
-.file-upload-group {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.file-upload-group .form-input {
-  flex: 1;
-  cursor: pointer;
-}
-
-.btn-upload {
-  background-color: #fbe6e6;
-  border: none;
-  padding: 0 1.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #333;
-  transition: background 0.3s;
-}
-
-.btn-upload:hover {
-  background-color: #f5d4d4;
-}
-
 /* Botão de Adicionar (aproveita a classe .btn-action existente) */
 .btn-full {
   width: 100%;
