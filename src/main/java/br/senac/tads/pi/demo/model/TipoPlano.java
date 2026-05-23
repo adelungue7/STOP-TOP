@@ -1,8 +1,11 @@
 package br.senac.tads.pi.demo.model;
 
 public enum TipoPlano {
+    AVULSO("Avulso"),
     DIARIO("Diário"),
-    MENSAL("Mensal");
+    MENSAL("Mensal"),
+    TRIMESTRAL("Trimestral"),
+    SEMESTRAL("Semestral");
 
     private final String descricao;
 
@@ -13,6 +16,5 @@ public enum TipoPlano {
     public String getDescricao() {
         return descricao;
     }
-
 
 }

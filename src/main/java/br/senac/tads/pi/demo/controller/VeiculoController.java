@@ -47,6 +47,13 @@ public class VeiculoController {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
+    @GetMapping("/placa/{placa}")
+    public ResponseEntity<Veiculo> buscarPorPlaca(@PathVariable String placa) {
+        return service.buscarPorPlaca(placa)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // Atualizar veículo usando IF para validação
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Veiculo veiculo) {

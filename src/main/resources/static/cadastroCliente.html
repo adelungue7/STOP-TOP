@@ -19,12 +19,11 @@
         </a>
       </div>
       <ul>
-        <li><a href="cadastroCliente.html">Cadastrar Cliente</a></li>
+        <li><a href="cadastroCliente.html">Cliente</a></li>
         <li><a href="pagamento.html">Pagamento</a></li>
-        <li><a href="cadastroVeiculo.html">Cadastramento de Veículo</a></li>
+        <li><a href="cadastroVeiculo.html">Veículo</a></li>
         <li><a href="gestao.html">Gestão</a></li>
         <li><a href="regras.html">Regras</a></li>
-        <li><a href="calculoPermanencia.html">Cálculo</a></li>
       </ul>
       <div class="navbar-right">
         <div class="nav-icons">
@@ -57,8 +56,11 @@
       -->
             <select class="form-input" id="tipoPlano" style="margin-bottom: 1rem;">
                 <option value="">Plano escolhido</option>
-                <option value="MENSAL">Mensal</option>
+                <option value="AVULSO">Avulso</option>
                 <option value="DIARIO">Diário</option>
+                <option value="MENSAL">Mensal</option>
+                <option value="TRIMESTRAL">Trimestral</option>
+                <option value="SEMESTRAL">Semestral</option>
             </select>
 
             <button class="btn-action btn-full" onclick="cadastrarCliente()">

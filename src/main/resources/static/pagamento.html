@@ -9,7 +9,7 @@
 
 <body>
   <!-- NAVBAR -->
-      <nav>
+  <nav>
     <div class="container">
       <div class="logo">
         <a href="/index.html" style="text-decoration: none; color: inherit; font-size: inherit; font-weight: inherit;">
@@ -17,12 +17,11 @@
         </a>
       </div>
       <ul>
-        <li><a href="cadastroCliente.html">Cadastrar Cliente</a></li>
+        <li><a href="cadastroCliente.html">Cliente</a></li>
         <li><a href="pagamento.html">Pagamento</a></li>
-        <li><a href="cadastroVeiculo.html">Cadastramento de Veículo</a></li>
+        <li><a href="cadastroVeiculo.html">Veículo</a></li>
         <li><a href="gestao.html">Gestão</a></li>
         <li><a href="regras.html">Regras</a></li>
-        <li><a href="calculoPermanencia.html">Cálculo</a></li>
       </ul>
       <div class="navbar-right">
         <div class="nav-icons">
@@ -39,16 +38,19 @@
       
       <form id="paymentForm" class="vehicle-form">
         <div class="form-group" style="margin-bottom: 1rem;">
-          <input type="text" class="form-input" placeholder="Placa do Veículo:" id="placaVeiculo" required>
+          <label for="placaVeiculo">Placa do Veículo:</label>
+          <input type="text" class="form-input" placeholder="Digite a placa..." id="placaVeiculo" required>
         </div>
         
         <div class="form-grid">
-          <input type="text" class="form-input" placeholder="Veículo:" id="veiculo" required>
-          <input type="text" class="form-input" placeholder="Nome do Proprietário:" id="nomeProprietario" required>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 1rem;">
-          <input type="number" step="0.01" class="form-input" placeholder="Valor da Hora (R$):" id="valorHora" required>
+          <div class="form-group">
+            <label for="veiculo">Veículo:</label>
+            <input type="text" class="form-input" id="veiculo" readonly>
+          </div>
+          <div class="form-group">
+            <label for="nomeProprietario">Nome do Proprietário:</label>
+            <input type="text" class="form-input" id="nomeProprietario" readonly>
+          </div>
         </div>
         
         <div class="form-grid">
@@ -64,6 +66,7 @@
 
         <div class="payment-summary">
           <h3>Resumo do Pagamento:</h3>
+          <div id="infoPlano" style="margin-bottom: 10px; color: #666; font-size: 0.9rem;">Informe a placa para identificar o plano.</div>
           <div class="total-display">
             TOTAL A PAGAR: <span id="totalDisplay">R$ 0,00</span>
           </div>
@@ -82,13 +85,13 @@
             </div>
             
             <div class="method-option">
-              <input type="radio" name="metodo" id="boleto" value="Boleto">
-              <label for="boleto">Boleto</label>
+              <input type="radio" name="metodo" id="money" value="Dinheiro">
+              <label for="money">Dinheiro</label>
             </div>
           </div>
         </div>
 
-        <button type="submit" id="btnFinalizar" class="btn-action btn-full">FINALIZAR PAGAMENTO (R$ 0,00)</button>
+        <button type="submit" id="btnFinalizar" class="btn-action btn-full">FINALIZAR PAGAMENTO</button>
       </form>
     </div>
   </main>

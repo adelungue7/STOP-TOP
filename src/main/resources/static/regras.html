@@ -10,7 +10,7 @@
 
 <body>
 
-        <nav>
+  <nav>
     <div class="container">
       <div class="logo">
         <a href="/index.html" style="text-decoration: none; color: inherit; font-size: inherit; font-weight: inherit;">
@@ -18,12 +18,11 @@
         </a>
       </div>
       <ul>
-        <li><a href="cadastroCliente.html">Cadastrar Cliente</a></li>
+        <li><a href="cadastroCliente.html">Cliente</a></li>
         <li><a href="pagamento.html">Pagamento</a></li>
-        <li><a href="cadastroVeiculo.html">Cadastramento de Veículo</a></li>
+        <li><a href="cadastroVeiculo.html">Veículo</a></li>
         <li><a href="gestao.html">Gestão</a></li>
         <li><a href="regras.html">Regras</a></li>
-        <li><a href="calculoPermanencia.html">Cálculo</a></li>
       </ul>
       <div class="navbar-right">
         <div class="nav-icons">
@@ -33,172 +32,155 @@
     </div>
   </nav>
 
-<div class="container">
+  <div class="container">
 
-  <div class="rules-header">
-    <p class="section-title">Configuração de Regras</p>
-  </div>
-
-  <div class="panel">
-    <div class="rules-grid">
-
-      <div class="rule-card">
-        <div class="rule-card-header">
-          Parâmetros de Tarifação
-        </div>
-
-        <div class="rule-form-grid">
-          <div class="rule-input-group">
-            <label>Valor 1ª Hora:</label>
-            <div class="input-with-symbol">
-              <span class="symbol-left">R$</span>
-              <input type="number" class="form-input pad-left" id="valorPrimeiraHora" placeholder="0.00">
-            </div>
-          </div>
-
-          <div class="rule-input-group">
-            <label>Hora Adicional:</label>
-            <div class="input-with-symbol">
-              <span class="symbol-left">R$</span>
-              <input type="number" class="form-input pad-left" id="valorHoraAdicional" placeholder="0.00">
-            </div>
-          </div>
-
-          <div class="rule-input-group">
-            <label>Tempo Tolerância:</label>
-            <div class="input-with-symbol">
-              <input type="number" class="form-input pad-right" id="tempoTolerancia" placeholder="0">
-              <span class="symbol-right">min</span>
-            </div>
-          </div>
-
-          <div class="rule-input-group">
-            <label>Taxa Veículo Especial:</label>
-            <div class="input-with-symbol">
-              <input type="number" class="form-input pad-right" id="taxaEspecial" placeholder="0">
-              <span class="symbol-right">%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="rule-card">
-        <div class="rule-card-header">
-          Gestão de vagas e reservas
-        </div>
-
-        <div class="rule-form-grid">
-          <div class="rule-input-group">
-            <label>Duração Máx. Reserva:</label>
-            <input type="number" class="form-input" id="duracaoReserva" placeholder="0">
-          </div>
-
-          <div class="rule-input-group">
-            <label>Vagas para Reserva:</label>
-            <div class="input-with-symbol">
-              <input type="number" class="form-input pad-right" id="vagasReservaPercentual" placeholder="0">
-              <span class="symbol-right">%</span>
-            </div>
-          </div>
-
-          <div class="rule-input-group">
-            <label>Máximo Permanência:</label>
-            <div class="input-with-symbol">
-              <input type="number" class="form-input pad-right-large" id="permanenciaMaxima" placeholder="0">
-              <span class="symbol-right">horas</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="rule-card">
-        <div class="rule-card-header">
-          Planos e descontos
-        </div>
-
-        <div class="rule-form-grid">
-          <div class="rule-input-group">
-            <label>Dias Notificação Renovar:</label>
-            <input type="number" class="form-input" id="diasNotificacaoRenovar" placeholder="0">
-          </div>
-
-          <div class="rule-input-group">
-            <label>Desconto Antecipado:</label>
-            <div class="input-with-symbol">
-              <input type="number" class="form-input pad-right" id="descontoAntecipado" placeholder="0">
-              <span class="symbol-right">%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="rules-header">
+      <p class="section-title">Configuração de Regras</p>
     </div>
 
-    <button class="btn-action btn-full rules-save-btn" onclick="salvarRegras()">
-      Salvar todas as regras
-    </button>
+    <div class="panel">
+      <div class="rules-grid">
+
+        <div class="rule-card">
+          <div class="rule-card-header">
+            Parâmetros de Tarifação
+          </div>
+
+          <div class="rule-form-grid">
+            <div class="rule-input-group">
+              <label>Tempo Tolerância:</label>
+              <div class="input-with-symbol">
+                <input type="number" class="form-input pad-right" id="tempoTolerancia" placeholder="0" min="0" required>
+                <span class="symbol-right">min</span>
+              </div>
+            </div>
+
+            <div class="rule-input-group">
+              <label>Valor Primeira Hora:</label>
+              <div class="input-with-symbol">
+                <span class="symbol-left">R$</span>
+                <input type="number" step="0.01" class="form-input pad-left" id="valorPrimeiraHora" placeholder="0.00" min="0" required>
+              </div>
+            </div>
+
+            <div class="rule-input-group">
+              <label>Valor Demais Horas:</label>
+              <div class="input-with-symbol">
+                <span class="symbol-left">R$</span>
+                <input type="number" step="0.01" class="form-input pad-left" id="valorDemaisHoras" placeholder="0.00" min="0" required>
+              </div>
+            </div>
+
+            <div class="rule-input-group">
+              <label>Valor Diário:</label>
+              <div class="input-with-symbol">
+                <span class="symbol-left">R$</span>
+                <input type="number" step="0.01" class="form-input pad-left" id="valorDiario" placeholder="0.00" min="0" required>
+              </div>
+            </div>
+
+            <div class="rule-input-group">
+              <label>Valor Mensal:</label>
+              <div class="input-with-symbol">
+                <span class="symbol-left">R$</span>
+                <input type="number" step="0.01" class="form-input pad-left" id="valorMensal" placeholder="0.00" min="0" required>
+              </div>
+            </div>
+
+            <div class="rule-input-group">
+              <label>Valor Trimestral:</label>
+              <div class="input-with-symbol">
+                <span class="symbol-left">R$</span>
+                <input type="number" step="0.01" class="form-input pad-left" id="valorTrimestral" placeholder="0.00" min="0" required>
+              </div>
+            </div>
+
+            <div class="rule-input-group">
+              <label>Valor Semestral:</label>
+              <div class="input-with-symbol">
+                <span class="symbol-left">R$</span>
+                <input type="number" step="0.01" class="form-input pad-left" id="valorSemestral" placeholder="0.00" min="0" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="btn-action btn-full rules-save-btn" onclick="salvarRegras()">
+        Salvar todas as regras
+      </button>
+    </div>
+
   </div>
 
-</div>
+  <footer>
+    <p>&copy; 2026 Stop Top - Sistema de Estacionamento</p>
+    <p style="font-size: 0.9rem; margin-top: 1rem;">Desenvolvido por: Rafael Adelungue, Gustavo Gonçalves, João
+      Vitor Reis, Nathan Liberatti e Erick Yuji</p>
+  </footer>
 
-<footer>
-  <p>&copy; 2026 Stop Top - Sistema de Estacionamento</p>
-  <p style="font-size: 0.9rem; margin-top: 1rem;">Desenvolvido por: Rafael Adelungue, Gustavo Gonçalves, João
-    Vitor Reis, Nathan Liberatti e Erick Yuji</p>
-</footer>
-
-<script>
-  window.onload = function() {
+  <script>
+    window.onload = function () {
       carregarRegras();
-  };
+    };
 
-  function carregarRegras() {
+    function carregarRegras() {
       fetch('/api/regras')
-          .then(response => response.json())
-          .then(data => {
-              if(data && data.id) {
-                  document.getElementById('valorPrimeiraHora').value = data.valorPrimeiraHora || '';
-                  document.getElementById('valorHoraAdicional').value = data.valorHoraAdicional || '';
-                  document.getElementById('tempoTolerancia').value = data.tempoTolerancia || '';
-                  document.getElementById('taxaEspecial').value = data.taxaEspecial || '';
-                  document.getElementById('duracaoReserva').value = data.duracaoReserva || '';
-                  document.getElementById('vagasReservaPercentual').value = data.vagasReservaPercentual || '';
-                  document.getElementById('permanenciaMaxima').value = data.permanenciaMaxima || '';
-                  document.getElementById('diasNotificacaoRenovar').value = data.diasNotificacaoRenovar || '';
-                  document.getElementById('descontoAntecipado').value = data.descontoAntecipado || '';
-              }
-          })
-          .catch(error => console.error('Erro ao carregar regras:', error));
-  }
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.id) {
+            document.getElementById('tempoTolerancia').value = data.tempoTolerancia || 0;
+            document.getElementById('valorPrimeiraHora').value = data.valorPrimeiraHora || 0;
+            document.getElementById('valorDemaisHoras').value = data.valorDemaisHoras || 0;
+            document.getElementById('valorDiario').value = data.valorDiario || 0;
+            document.getElementById('valorMensal').value = data.valorMensal || 0;
+            document.getElementById('valorTrimestral').value = data.valorTrimestral || 0;
+            document.getElementById('valorSemestral').value = data.valorSemestral || 0;
+          }
+        })
+        .catch(error => console.error('Erro ao carregar regras:', error));
+    }
 
-  function salvarRegras() {
+    function salvarRegras() {
+      const tempoTolerancia = document.getElementById('tempoTolerancia').value;
+      const valorPrimeiraHora = document.getElementById('valorPrimeiraHora').value;
+      const valorDemaisHoras = document.getElementById('valorDemaisHoras').value;
+      const valorDiario = document.getElementById('valorDiario').value;
+      const valorMensal = document.getElementById('valorMensal').value;
+      const valorTrimestral = document.getElementById('valorTrimestral').value;
+      const valorSemestral = document.getElementById('valorSemestral').value;
+
+      if (tempoTolerancia < 0 || valorPrimeiraHora < 0 || valorDemaisHoras < 0 || valorDiario < 0 || valorMensal < 0 || valorTrimestral < 0 || valorSemestral < 0) {
+        alert('Os valores não podem ser negativos.');
+        return;
+      }
+
       const regras = {
-          valorPrimeiraHora: document.getElementById('valorPrimeiraHora').value,
-          valorHoraAdicional: document.getElementById('valorHoraAdicional').value,
-          tempoTolerancia: document.getElementById('tempoTolerancia').value,
-          taxaEspecial: document.getElementById('taxaEspecial').value,
-          duracaoReserva: document.getElementById('duracaoReserva').value,
-          vagasReservaPercentual: document.getElementById('vagasReservaPercentual').value,
-          permanenciaMaxima: document.getElementById('permanenciaMaxima').value,
-          diasNotificacaoRenovar: document.getElementById('diasNotificacaoRenovar').value,
-          descontoAntecipado: document.getElementById('descontoAntecipado').value
+        tempoTolerancia: parseInt(tempoTolerancia),
+        valorPrimeiraHora: parseFloat(valorPrimeiraHora),
+        valorDemaisHoras: parseFloat(valorDemaisHoras),
+        valorDiario: parseFloat(valorDiario),
+        valorMensal: parseFloat(valorMensal),
+        valorTrimestral: parseFloat(valorTrimestral),
+        valorSemestral: parseFloat(valorSemestral)
       };
 
       fetch('/api/regras', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(regras)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(regras)
       })
-      .then(response => {
-          if(response.ok) {
-              alert('Regras salvas com sucesso!');
+        .then(response => {
+          if (response.ok) {
+            alert('Regras salvas com sucesso!');
           } else {
-              alert('Erro ao salvar as regras. Verifique o console.');
+            alert('Erro ao salvar as regras. Verifique o console.');
           }
-      })
-      .catch(error => console.error('Erro:', error));
-  }
-</script>
+        })
+        .catch(error => console.error('Erro:', error));
+    }
+  </script>
 
 </body>
 

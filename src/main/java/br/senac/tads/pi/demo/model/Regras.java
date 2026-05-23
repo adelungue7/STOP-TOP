@@ -11,43 +11,35 @@ public class Regras {
 	@Id
 	private Long id = 1L;
 
-	private Double valorPrimeiraHora;
-	private Double valorHoraAdicional;
 	private Integer tempoTolerancia;
-	private Double taxaEspecial;
-	private Integer duracaoReserva;
-	private Integer vagasReservaPercentual;
-	private Integer permanenciaMaxima;
-	private Integer diasNotificacaoRenovar;
-	private Double descontoAntecipado;
+	private Double valorPrimeiraHora;
+	private Double valorDemaisHoras;
+	private Double valorDiario;
+	private Double valorMensal;
+	private Double valorTrimestral;
+	private Double valorSemestral;
 
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }
 
-	public Double getValorPrimeiraHora() { return valorPrimeiraHora; }
-	public void setValorPrimeiraHora(Double valorPrimeiraHora) { this.valorPrimeiraHora = valorPrimeiraHora; }
-
-	public Double getValorHoraAdicional() { return valorHoraAdicional; }
-	public void setValorHoraAdicional(Double valorHoraAdicional) { this.valorHoraAdicional = valorHoraAdicional; }
-
 	public Integer getTempoTolerancia() { return tempoTolerancia; }
 	public void setTempoTolerancia(Integer tempoTolerancia) { this.tempoTolerancia = tempoTolerancia; }
 
-	public Double getTaxaEspecial() { return taxaEspecial; }
-	public void setTaxaEspecial(Double taxaEspecial) { this.taxaEspecial = taxaEspecial; }
+	public Double getValorPrimeiraHora() { return valorPrimeiraHora; }
+	public void setValorPrimeiraHora(Double valorPrimeiraHora) { this.valorPrimeiraHora = valorPrimeiraHora; }
 
-	public Integer getDuracaoReserva() { return duracaoReserva; }
-	public void setDuracaoReserva(Integer duracaoReserva) { this.duracaoReserva = duracaoReserva; }
+	public Double getValorDemaisHoras() { return valorDemaisHoras; }
+	public void setValorDemaisHoras(Double valorDemaisHoras) { this.valorDemaisHoras = valorDemaisHoras; }
 
-	public Integer getVagasReservaPercentual() { return vagasReservaPercentual; }
-	public void setVagasReservaPercentual(Integer vagasReservaPercentual) { this.vagasReservaPercentual = vagasReservaPercentual; }
+	public Double getValorDiario() { return valorDiario; }
+	public void setValorDiario(Double valorDiario) { this.valorDiario = valorDiario; }
 
-	public Integer getPermanenciaMaxima() { return permanenciaMaxima; }
-	public void setPermanenciaMaxima(Integer permanenciaMaxima) { this.permanenciaMaxima = permanenciaMaxima; }
+	public Double getValorMensal() { return valorMensal; }
+	public void setValorMensal(Double valorMensal) { this.valorMensal = valorMensal; }
 
-	public Integer getDiasNotificacaoRenovar() { return diasNotificacaoRenovar; }
-	public void setDiasNotificacaoRenovar(Integer diasNotificacaoRenovar) { this.diasNotificacaoRenovar = diasNotificacaoRenovar; }
+	public Double getValorTrimestral() { return valorTrimestral; }
+	public void setValorTrimestral(Double valorTrimestral) { this.valorTrimestral = valorTrimestral; }
 
-	public Double getDescontoAntecipado() { return descontoAntecipado; }
-	public void setDescontoAntecipado(Double descontoAntecipado) { this.descontoAntecipado = descontoAntecipado; }
+	public Double getValorSemestral() { return valorSemestral; }
+	public void setValorSemestral(Double valorSemestral) { this.valorSemestral = valorSemestral; }
 }

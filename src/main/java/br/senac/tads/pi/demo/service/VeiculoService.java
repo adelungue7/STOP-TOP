@@ -49,6 +49,10 @@ public class VeiculoService {
         return veiculoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Veículo não encontrado: " + id));
     }
+
+    public Optional<Veiculo> buscarPorPlaca(String placa) {
+        return veiculoRepository.findByPlaca(placa);
+    }
  
     public Veiculo atualizar(Long id, Veiculo dadosNovos) {
         Veiculo existente = buscarPorId(id);

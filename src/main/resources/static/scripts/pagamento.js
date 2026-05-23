@@ -1,85 +1,147 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const paymentForm = document.getElementById('paymentForm');
-    const entradaInput = document.getElementById('entrada');
-    const saidaInput = document.getElementById('saida');
-    const valorHoraInput = document.getElementById('valorHora');
-    const totalDisplay = document.getElementById('totalDisplay');
-    const btnFinalizar = document.getElementById('btnFinalizar');
+let regrasAtuais = null;
+let clienteAtual = null;
 
-    function calcularTotal() {
-        const entrada = new Date(entradaInput.value);
-        const saida = new Date(saidaInput.value);
-        const valorHora = parseFloat(valorHoraInput.value) || 0;
+document.addEventListener('DOMContentLoaded', () => {
+    carregarRegras();
+    configurarBuscaPlaca();
+    configurarCalculoAutomatico();
+    configurarFormulario();
+});
 
-        if (entrada && saida && saida > entrada) {
-            const diffMs = saida - entrada;
-            const diffHoras = diffMs / (1000 * 60 * 60);
-            const total = diffHoras * valorHora;
-            
-            const totalFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            totalDisplay.textContent = totalFormatado;
-            btnFinalizar.textContent = `FINALIZAR PAGAMENTO (${totalFormatado})`;
-            return total;
+function carregarRegras() {
+    fetch('/api/regras')
+        .then(res => res.json())
+        .then(data => {
+            regrasAtuais = data;
+            console.log('Regras carregadas:', regrasAtuais);
+        })
+        .catch(err => console.error('Erro ao carregar regras:', err));
+}
+
+function configurarBuscaPlaca() {
+    const placaInput = document.getElementById('placaVeiculo');
+    placaInput.addEventListener('blur', () => {
+        const placa = placaInput.value.trim();
+        if (placa) {
+            fetch(`/veiculos/placa/${placa}`)
+                .then(res => {
+                    if (res.ok) return res.json();
+                    throw new Error('Veículo não encontrado');
+                })
+                .then(veiculo => {
+                    document.getElementById('veiculo').value = veiculo.nomeVeiculo;
+                    document.getElementById('nomeProprietario').value = veiculo.nomeProprietario;
+                    buscarDadosCliente(veiculo.nomeProprietario, placa);
+                })
+                .catch(err => {
+                    console.warn(err.message);
+                    document.getElementById('veiculo').value = '';
+                    document.getElementById('nomeProprietario').value = '';
+                    clienteAtual = null;
+                    document.getElementById('infoPlano').innerText = 'Veículo não cadastrado. Tarifação Avulsa.';
+                    calcularTotal();
+                });
+        }
+    });
+}
+
+function buscarDadosCliente(nome, placa) {
+    fetch('/api/gestao/mensalistas')
+        .then(res => res.json())
+        .then(clientes => {
+            // Busca por placa primeiro, depois por nome
+            clienteAtual = clientes.find(c => c.placa === placa) || clientes.find(c => c.nome === nome);
+            if (clienteAtual) {
+                document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: ${clienteAtual.tipoPlano}`;
+            } else {
+                document.getElementById('infoPlano').innerText = 'Cliente sem plano ativo. Tarifação Avulsa.';
+            }
+            calcularTotal();
+        })
+        .catch(err => console.error('Erro ao buscar cliente:', err));
+}
+
+function configurarCalculoAutomatico() {
+    const inputs = ['entrada', 'saida'];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('change', calcularTotal);
+    });
+}
+
+function calcularTotal() {
+    const entrada = document.getElementById('entrada').value;
+    const saida = document.getElementById('saida').value;
+
+    if (!entrada || !saida || !regrasAtuais) return;
+
+    const dataEntrada = new Date(entrada);
+    const dataSaida = new Date(saida);
+
+    if (dataSaida <= dataEntrada) {
+        document.getElementById('totalDisplay').innerText = 'R$ 0,00';
+        return;
+    }
+
+    const diffMs = dataSaida - dataEntrada;
+    const diffMin = Math.floor(diffMs / 60000);
+    const tempoTolerancia = regrasAtuais.tempoTolerancia || 0;
+
+    let total = 0;
+
+    if (clienteAtual && (clienteAtual.tipoPlano === 'MENSAL' || clienteAtual.tipoPlano === 'TRIMESTRAL' || clienteAtual.tipoPlano === 'SEMESTRAL')) {
+        total = 0;
+        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: ${clienteAtual.tipoPlano} (Valor incluso no plano)`;
+    } else if (clienteAtual && clienteAtual.tipoPlano === 'DIARIO') {
+        total = regrasAtuais.valorDiario || 0;
+        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: DIARIO (Valor fixo)`;
+    } else {
+        if (diffMin <= tempoTolerancia) {
+            total = 0;
+            document.getElementById('infoPlano').innerText = 'Tempo dentro da tolerância.';
         } else {
-            totalDisplay.textContent = 'R$ 0,00';
-            btnFinalizar.textContent = 'FINALIZAR PAGAMENTO (R$ 0,00)';
-            return 0;
+            const horasTotais = Math.ceil(diffMin / 60);
+            if (horasTotais > 0) {
+                // Primeira hora
+                total = regrasAtuais.valorPrimeiraHora || 0;
+                // Demais horas
+                if (horasTotais > 1) {
+                    total += (horasTotais - 1) * (regrasAtuais.valorDemaisHoras || 0);
+                }
+            }
         }
     }
 
-    [entradaInput, saidaInput, valorHoraInput].forEach(input => {
-        input.addEventListener('change', calcularTotal);
-        input.addEventListener('input', calcularTotal);
-    });
+    document.getElementById('totalDisplay').innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    document.getElementById('btnFinalizar').innerText = `FINALIZAR PAGAMENTO (R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })})`;
+}
 
-    paymentForm.addEventListener('submit', function(e) {
+function configurarFormulario() {
+    document.getElementById('paymentForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        
-        const total = calcularTotal();
-        
-        const formData = {
+
+        const payload = {
             placaVeiculo: document.getElementById('placaVeiculo').value,
             veiculo: document.getElementById('veiculo').value,
             nomeProprietario: document.getElementById('nomeProprietario').value,
-            entrada: entradaInput.value,
-            saida: saidaInput.value,
-            valorHora: parseFloat(valorHoraInput.value),
-            valorTotal: total,
+            entrada: document.getElementById('entrada').value,
+            saida: document.getElementById('saida').value,
+            valorTotal: document.getElementById('totalDisplay').innerText.replace('R$ ', '').replace(/\./g, '').replace(',', '.'),
             metodoPagamento: document.querySelector('input[name="metodo"]:checked').value
         };
 
         fetch('/pagamentos', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         })
-        .then(response => {
-            if (response.ok) {
-                alert('Pagamento realizado com sucesso!');
-                window.location.href = 'index.html';
+        .then(res => {
+            if (res.ok) {
+                alert('Pagamento finalizado com sucesso!');
+                location.reload();
             } else {
                 alert('Erro ao processar pagamento.');
             }
         })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro de conexão com o servidor.');
-        });
+        .catch(err => console.error('Erro:', err));
     });
-
-    // Lógica visual para os radio buttons
-    const radios = document.querySelectorAll('input[name="metodo"]');
-    radios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            document.querySelectorAll('.method-option').forEach(opt => {
-                opt.classList.remove('active');
-            });
-            
-            if (this.checked) {
-                this.closest('.method-option').classList.add('active');
-            }
-        });
-    });
-});
+}
