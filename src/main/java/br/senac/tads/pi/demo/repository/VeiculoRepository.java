@@ -13,4 +13,7 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, Long> {
     
     // Busca os dados de um veículo usando a placa
     Optional<Veiculo> findByPlaca(String placa);
+
+    // Novo método para buscar veículo pelo nome do dono
+    Optional<Veiculo> findByNomeProprietarioIgnoreCase(String nomeProprietario);
 }

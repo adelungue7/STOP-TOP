@@ -70,19 +70,25 @@ function listarClientes() {
             tbody.innerHTML = '';
 
             if (clientes.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7">Nenhum cliente cadastrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8">Nenhum cliente cadastrado.</td></tr>';
                 return;
             }
 
             clientes.forEach(cliente => {
+                // Cria uma tag bonitinha para a placa. Se não tiver carro, mostra '-'
+                const tagPlaca = cliente.placa 
+                    ? `<span style="background:#e2e3e5; padding: 4px 8px; border-radius: 4px; font-weight: bold; color: #333; font-size: 0.85rem;">${cliente.placa}</span>`
+                    : '-';
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${cliente.nome}</td>
                     <td>${cliente.cpf}</td>
+                    <td>${tagPlaca}</td>
                     <td>${cliente.email}</td>
                     <td>${cliente.telefone}</td>
                     <td>${cliente.endereco || '-'}</td>
-                    <td>${cliente.tipoPlano}</td>
+                    <td>${cliente.tipoPlano || 'AVULSO'}</td>
                     <td>
                         <button class="btn-delete" onclick="deletarCliente('${cliente.cpf}')">Excluir</button>
                     </td>
@@ -93,7 +99,7 @@ function listarClientes() {
         .catch(error => {
             console.error('Erro:', error);
             const tbody = document.getElementById('tabela-body');
-            tbody.innerHTML = '<tr><td colspan="7">Erro ao carregar clientes.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8">Erro ao carregar clientes.</td></tr>';
         });
 }
 

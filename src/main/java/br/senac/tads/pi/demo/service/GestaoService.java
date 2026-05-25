@@ -82,9 +82,10 @@ public class GestaoService {
 
     @Transactional
     public void removerPlano(String cpf) {
+        // Antes estava c.setTipoPlano(null); 
+        // Agora, se apagar pela Gestão, o cliente é excluído do sistema sincronizando as duas telas.
         clienteRepo.findById(cpf).ifPresent(c -> {
-            c.setTipoPlano(null);
-            clienteRepo.save(c);
+            clienteRepo.delete(c);
         });
     }
 }

@@ -26,6 +26,9 @@ public class Cliente {
     @Enumerated(EnumType.STRING) // salva "MENSAL" ou "DIARIO" no banco ao invés de 0 e 1
     private TipoPlano tipoPlano;
 
+    @jakarta.persistence.Transient // Importante: não cria coluna no banco, apenas trafega o dado
+    private String placa;
+
     public String getCpf() {
         return cpf;
     }
@@ -89,4 +92,14 @@ public class Cliente {
     public void setTipoPlano(TipoPlano tipoPlano) {
         this.tipoPlano = tipoPlano;
     }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    
 }

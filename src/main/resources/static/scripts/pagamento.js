@@ -69,8 +69,10 @@ function configurarCalculoAutomatico() {
 }
 
 function calcularTotal() {
-    const entrada = document.getElementById('entrada').value;
-    const saida = document.getElementById('saida').value;
+    const entradaInput = document.getElementById('entrada');
+    const saidaInput = document.getElementById('saida');
+    const entrada = entradaInput.value;
+    const saida = saidaInput.value;
 
     if (!entrada || !saida || !regrasAtuais) return;
 
@@ -88,22 +90,32 @@ function calcularTotal() {
 
     let total = 0;
 
+    // VERIFICAÇÃO DE PLANOS E BLOQUEIO DE INPUTS
     if (clienteAtual && (clienteAtual.tipoPlano === 'MENSAL' || clienteAtual.tipoPlano === 'TRIMESTRAL' || clienteAtual.tipoPlano === 'SEMESTRAL')) {
         total = 0;
         document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: ${clienteAtual.tipoPlano} (Valor incluso no plano)`;
+        entradaInput.disabled = true;
+        saidaInput.disabled = true;
     } else if (clienteAtual && clienteAtual.tipoPlano === 'DIARIO') {
         total = regrasAtuais.valorDiario || 0;
         document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: DIARIO (Valor fixo)`;
+        entradaInput.disabled = true;
+        saidaInput.disabled = true;
     } else {
+        // REATIVA INPUTS PARA TARIFAÇÃO AVULSA
+        entradaInput.disabled = false;
+        saidaInput.disabled = false;
+
+        // LÓGICA DE TOLERÂNCIA DINÂMICA
         if (diffMin <= tempoTolerancia) {
             total = 0;
-            document.getElementById('infoPlano').innerText = 'Tempo dentro da tolerância.';
+            document.getElementById('infoPlano').innerText = 'Tempo dentro da tolerância. Não há cobrança.';
         } else {
+            // FIX: Retorna a mensagem para tarifação normal caso atualize para mais de 15 min
+            document.getElementById('infoPlano').innerText = 'Tarifação Avulsa (Tolerância excedida).';
             const horasTotais = Math.ceil(diffMin / 60);
             if (horasTotais > 0) {
-                // Primeira hora
                 total = regrasAtuais.valorPrimeiraHora || 0;
-                // Demais horas
                 if (horasTotais > 1) {
                     total += (horasTotais - 1) * (regrasAtuais.valorDemaisHoras || 0);
                 }

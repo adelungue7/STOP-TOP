@@ -51,8 +51,9 @@ function configurarBuscaNome() {
             .then(clientes => {
                 const filtrados = clientes.filter(c => c.nome.toLowerCase().includes(query));
                 if (filtrados.length > 0) {
+                    // ✅ FIX: Passa também a placa (c.placa) para a função de seleção
                     sugestoes.innerHTML = filtrados.map(c => 
-                        `<div class="suggestion-item" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee;" onclick="selecionarCliente('${c.nome}', '${c.cpf}')">
+                        `<div class="suggestion-item" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee;" onclick="selecionarCliente('${c.nome}', '${c.cpf}', '${c.placa || ''}')">
                             ${c.nome} (${c.cpf})
                         </div>`
                     ).join('');
@@ -68,10 +69,15 @@ function configurarBuscaNome() {
     });
 }
 
-function selecionarCliente(nome, cpf) {
+// ✅ FIX: Recebe o parâmetro da placa e injeta diretamente no input correspondente
+function selecionarCliente(nome, cpf, placa) {
     document.getElementById('nomeMensalista').value = nome;
     document.getElementById('cpfCnpj').value = cpf;
+    document.getElementById('placaPrincipal').value = placa; // Preenche a placa de forma automatizada!
     document.getElementById('listaSugestoes').style.display = 'none';
+    
+    // Executa o cálculo da data de fim caso o plano já esteja selecionado
+    calcularDataFim();
 }
 
 function configurarCalculoDataFim() {
