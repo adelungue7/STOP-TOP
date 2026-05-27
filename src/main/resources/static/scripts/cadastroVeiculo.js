@@ -23,8 +23,8 @@ function salvarVeiculo(e) {
     const vaga = document.getElementById('vagaVeiculo').value.trim();
     const descricao = document.getElementById('descricaoVeiculo').value.trim();
 
-    if (!nomeVeiculo || !nomeProprietario || !placa) {
-        mostrarToast('Nome, Proprietário e Placa são obrigatórios.', 'error');
+    if (!nomeVeiculo || !nomeProprietario || !placa || !vaga) {
+        mostrarToast('Nome, Proprietário, Placa e Vaga são obrigatórios.', 'error');
         return;
     }
 
