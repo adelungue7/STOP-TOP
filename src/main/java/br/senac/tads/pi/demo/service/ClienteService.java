@@ -22,6 +22,14 @@ public class ClienteService {
         return repository.save(cliente);
     }
 
+    // ✅ NOVO: Método para verificar se o CPF já existe no banco
+    public boolean cpfExiste(String cpf) {
+        if (cpf == null || cpf.trim().isEmpty()) {
+            return false;
+        }
+        return repository.existsById(cpf.trim());
+    }
+
     // FIX: Ao listar todos, ele procura no banco o veículo de cada pessoa e atrela a placa
     public List<Cliente> listarTodos() {
         List<Cliente> clientes = repository.findAll();

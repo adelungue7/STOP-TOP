@@ -27,8 +27,16 @@ public class ClienteController {
     }
 
     // Cadastrar novo cliente
+    // Alterado de ResponseEntity<Cliente> para ResponseEntity<?> para permitir mensagens de erro
     @PostMapping
-    public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente) {
+    public ResponseEntity<?> cadastrar(@RequestBody Cliente cliente) {
+        
+        // ✅ NOVO: Barreira que bloqueia CPFs duplicados no cadastro
+        if (service.cpfExiste(cliente.getCpf())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Já existe um cliente cadastrado com este CPF.");
+        }
+
         Cliente salvo = service.criarCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
