@@ -80,11 +80,15 @@ public class GestaoService {
             .orElseThrow();
     }
 
+    // ✅ FIX: Efeito Cascata na exclusão pela tela de Gestão
     @Transactional
     public void removerPlano(String cpf) {
-        // Antes estava c.setTipoPlano(null); 
-        // Agora, se apagar pela Gestão, o cliente é excluído do sistema sincronizando as duas telas.
         clienteRepo.findById(cpf).ifPresent(c -> {
+            // 1º Passo: Efeito Cascata -> Remove o veículo do cliente antes de apagá-lo
+            veiculoRepo.findByNomeProprietarioIgnoreCase(c.getNome())
+                .ifPresent(veiculo -> veiculoRepo.delete(veiculo));
+            
+            // 2º Passo: Apaga o cliente da base de dados
             clienteRepo.delete(c);
         });
     }

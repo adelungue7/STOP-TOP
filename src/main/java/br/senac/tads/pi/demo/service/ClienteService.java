@@ -2,6 +2,7 @@ package br.senac.tads.pi.demo.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // ✅ Import adicionado para segurança da transação
 import br.senac.tads.pi.demo.model.Cliente;
 import br.senac.tads.pi.demo.repository.ClienteRepository;
 import br.senac.tads.pi.demo.repository.VeiculoRepository;
@@ -53,7 +54,16 @@ public class ClienteService {
         return repository.save(existente);
     }
 
+    // ✅ FIX: Efeito Cascata na exclusão pela tela de Clientes
+    @Transactional
     public void deletar(String cpf) {
-        repository.deleteById(cpf);
+        repository.findById(cpf).ifPresent(cliente -> {
+            // 1º Passo: Procura se tem algum carro no nome do cliente e apaga
+            veiculoRepository.findByNomeProprietarioIgnoreCase(cliente.getNome())
+                .ifPresent(veiculo -> veiculoRepository.delete(veiculo));
+            
+            // 2º Passo: Apaga o cliente
+            repository.delete(cliente);
+        });
     }
 }
