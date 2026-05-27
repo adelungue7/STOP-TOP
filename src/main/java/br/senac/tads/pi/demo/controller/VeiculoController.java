@@ -25,12 +25,17 @@ public class VeiculoController {
                     .body("Proprietário não encontrado. O cliente deve estar cadastrado no sistema.");
         }
 
+        // ✅ NOVO: Impede que o cliente cadastre um segundo veículo
+        if (service.clienteJaPossuiVeiculo(veiculo.getNomeProprietario(), null)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Este cliente já possui um veículo cadastrado. O limite é de 1 veículo por cliente.");
+        }
+
         if (service.placaJaCadastrada(veiculo.getPlaca(), null)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Já existe um veículo cadastrado com a placa: " + veiculo.getPlaca());
         }
 
-        // ✅ NOVO: Bloqueia se a vaga estiver ocupada
         if (service.vagaJaOcupada(veiculo.getVaga(), null)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("A vaga '" + veiculo.getVaga() + "' já está ocupada por outro veículo.");
@@ -65,12 +70,17 @@ public class VeiculoController {
                     .body("Proprietário não encontrado. O cliente deve estar cadastrado no sistema.");
         }
 
+        // ✅ NOVO: Impede burlar o limite na hora de editar
+        if (service.clienteJaPossuiVeiculo(veiculo.getNomeProprietario(), id)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Este cliente já possui um veículo cadastrado. O limite é de 1 veículo por cliente.");
+        }
+
         if (service.placaJaCadastrada(veiculo.getPlaca(), id)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Já existe um veículo cadastrado com a placa: " + veiculo.getPlaca());
         }
 
-        // ✅ NOVO: Bloqueia se a vaga estiver ocupada na hora da atualização
         if (service.vagaJaOcupada(veiculo.getVaga(), id)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("A vaga '" + veiculo.getVaga() + "' já está ocupada por outro veículo.");

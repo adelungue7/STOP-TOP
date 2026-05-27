@@ -34,20 +34,37 @@ public class VeiculoService {
         return false;
     }
 
-    // ✅ NOVO: Retorna true se a vaga já estiver preenchida por outro carro
     public boolean vagaJaOcupada(String vaga, Long idIgnorado) {
         if (vaga == null || vaga.trim().isEmpty()) {
-            return false; // Se a pessoa deixar em branco, ignoramos a checagem
+            return false; 
         }
         
         Optional<Veiculo> vEncontrado = veiculoRepository.findByVagaIgnoreCase(vaga.trim());
         
         if (vEncontrado.isPresent()) {
-            // Se for o mesmo carro que já está na vaga sendo atualizado, permite
             if (idIgnorado != null && vEncontrado.get().getId().equals(idIgnorado)) {
                 return false;
             }
-            return true; // Vaga pertence a outro carro
+            return true; 
+        }
+        return false;
+    }
+
+    // ✅ NOVO MÉTODO: Bloqueia mais de um veículo para o mesmo proprietário
+    public boolean clienteJaPossuiVeiculo(String nomeProprietario, Long idIgnorado) {
+        if (nomeProprietario == null || nomeProprietario.trim().isEmpty()) {
+            return false;
+        }
+        
+        Optional<Veiculo> vEncontrado = veiculoRepository.findByNomeProprietarioIgnoreCase(nomeProprietario.trim());
+        
+        if (vEncontrado.isPresent()) {
+            // Se o usuário estiver apenas editando/atualizando o carro que já é dele, permite passar.
+            if (idIgnorado != null && vEncontrado.get().getId().equals(idIgnorado)) {
+                return false;
+            }
+            // Se for um ID diferente ou um cadastro novo, avisa que ele já tem carro.
+            return true; 
         }
         return false;
     }
