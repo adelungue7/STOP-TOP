@@ -18,21 +18,36 @@ public class VeiculoService {
         this.clienteRepository = clienteRepository;
     }
  
-    // Retorna true se o cliente existir
     public boolean proprietarioExiste(String nomeProprietario) {
         return clienteRepository.existsByNome(nomeProprietario);
     }
  
-    // Retorna true se a placa existir (e ignora se for a placa do próprio veículo sendo editado)
     public boolean placaJaCadastrada(String placa, Long idIgnorado) {
         Optional<Veiculo> vEncontrado = veiculoRepository.findByPlaca(placa);
        
         if (vEncontrado.isPresent()) {
-            // Se encontrou a placa, mas é o mesmo ID que está sendo atualizado, permite
             if (idIgnorado != null && vEncontrado.get().getId().equals(idIgnorado)) {
                 return false;
             }
-            return true; // A placa pertence a outro veículo
+            return true;
+        }
+        return false;
+    }
+
+    // ✅ NOVO: Retorna true se a vaga já estiver preenchida por outro carro
+    public boolean vagaJaOcupada(String vaga, Long idIgnorado) {
+        if (vaga == null || vaga.trim().isEmpty()) {
+            return false; // Se a pessoa deixar em branco, ignoramos a checagem
+        }
+        
+        Optional<Veiculo> vEncontrado = veiculoRepository.findByVagaIgnoreCase(vaga.trim());
+        
+        if (vEncontrado.isPresent()) {
+            // Se for o mesmo carro que já está na vaga sendo atualizado, permite
+            if (idIgnorado != null && vEncontrado.get().getId().equals(idIgnorado)) {
+                return false;
+            }
+            return true; // Vaga pertence a outro carro
         }
         return false;
     }
@@ -61,7 +76,7 @@ public class VeiculoService {
         existente.setNomeProprietario(dadosNovos.getNomeProprietario());
         existente.setPlaca(dadosNovos.getPlaca());
         existente.setDescricao(dadosNovos.getDescricao());
-        existente.setVaga(dadosNovos.getVaga()); // Mantém a atualização da vaga
+        existente.setVaga(dadosNovos.getVaga()); 
        
         return veiculoRepository.save(existente);
     }

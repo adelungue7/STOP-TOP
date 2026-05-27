@@ -17,20 +17,23 @@ public class VeiculoController {
         this.service = service;
     }
 
-    // Cadastrar novo veículo usando IF para validação
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody Veiculo veiculo) {
         
-        // 1. Verifica se o proprietário existe
         if (!service.proprietarioExiste(veiculo.getNomeProprietario())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Proprietário não encontrado. O cliente deve estar cadastrado no sistema.");
         }
 
-        // 2. Verifica se a placa já existe
         if (service.placaJaCadastrada(veiculo.getPlaca(), null)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Já existe um veículo cadastrado com a placa: " + veiculo.getPlaca());
+        }
+
+        // ✅ NOVO: Bloqueia se a vaga estiver ocupada
+        if (service.vagaJaOcupada(veiculo.getVaga(), null)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("A vaga '" + veiculo.getVaga() + "' já está ocupada por outro veículo.");
         }
 
         Veiculo salvo = service.criarVeiculo(veiculo);
@@ -54,7 +57,6 @@ public class VeiculoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Atualizar veículo usando IF para validação
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Veiculo veiculo) {
         
@@ -66,6 +68,12 @@ public class VeiculoController {
         if (service.placaJaCadastrada(veiculo.getPlaca(), id)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Já existe um veículo cadastrado com a placa: " + veiculo.getPlaca());
+        }
+
+        // ✅ NOVO: Bloqueia se a vaga estiver ocupada na hora da atualização
+        if (service.vagaJaOcupada(veiculo.getVaga(), id)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("A vaga '" + veiculo.getVaga() + "' já está ocupada por outro veículo.");
         }
 
         Veiculo atualizado = service.atualizar(id, veiculo);

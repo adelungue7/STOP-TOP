@@ -91,27 +91,40 @@ function calcularTotal() {
     let total = 0;
 
     // VERIFICAÇÃO DE PLANOS E BLOQUEIO DE INPUTS
-    if (clienteAtual && (clienteAtual.tipoPlano === 'MENSAL' || clienteAtual.tipoPlano === 'TRIMESTRAL' || clienteAtual.tipoPlano === 'SEMESTRAL')) {
-        total = 0;
-        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: ${clienteAtual.tipoPlano} (Valor incluso no plano)`;
+    if (clienteAtual && clienteAtual.tipoPlano === 'MENSAL') {
+        total = regrasAtuais.valorMensal || 0; // Pega o valor mensal do banco
+        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: MENSAL`;
         entradaInput.disabled = true;
         saidaInput.disabled = true;
+
+    } else if (clienteAtual && clienteAtual.tipoPlano === 'TRIMESTRAL') {
+        total = regrasAtuais.valorTrimestral || 0; // Pega o valor trimestral do banco
+        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: TRIMESTRAL`;
+        entradaInput.disabled = true;
+        saidaInput.disabled = true;
+
+    } else if (clienteAtual && clienteAtual.tipoPlano === 'SEMESTRAL') {
+        total = regrasAtuais.valorSemestral || 0; // Pega o valor semestral do banco
+        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: SEMESTRAL`;
+        entradaInput.disabled = true;
+        saidaInput.disabled = true;
+
     } else if (clienteAtual && clienteAtual.tipoPlano === 'DIARIO') {
-        total = regrasAtuais.valorDiario || 0;
-        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: DIARIO (Valor fixo)`;
+        total = regrasAtuais.valorDiario || 0; 
+        document.getElementById('infoPlano').innerText = `Cliente: ${clienteAtual.nome} | Plano: DIARIO`;
         entradaInput.disabled = true;
         saidaInput.disabled = true;
+
     } else {
         // REATIVA INPUTS PARA TARIFAÇÃO AVULSA
         entradaInput.disabled = false;
         saidaInput.disabled = false;
 
-        // LÓGICA DE TOLERÂNCIA DINÂMICA
+        // LÓGICA DE TOLERÂNCIA
         if (diffMin <= tempoTolerancia) {
             total = 0;
             document.getElementById('infoPlano').innerText = 'Tempo dentro da tolerância. Não há cobrança.';
         } else {
-            // FIX: Retorna a mensagem para tarifação normal caso atualize para mais de 15 min
             document.getElementById('infoPlano').innerText = 'Tarifação Avulsa (Tolerância excedida).';
             const horasTotais = Math.ceil(diffMin / 60);
             if (horasTotais > 0) {
@@ -149,7 +162,9 @@ function configurarFormulario() {
         .then(res => {
             if (res.ok) {
                 alert('Pagamento finalizado com sucesso!');
-                location.reload();
+                
+                // ✅ FIX: Redireciona para a tela inicial (Home) em vez de recarregar a página
+                window.location.href = '/index.html'; 
             } else {
                 alert('Erro ao processar pagamento.');
             }
